@@ -12,7 +12,10 @@ class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.searchQuery !== this.props.searchQuery) {
+    if (
+      prevProps.searchQuery !== this.props.searchQuery ||
+      prevProps.page !== this.props.page
+    ) {
       this.setState({ status: 'pending' });
       fetch(
         `https://pixabay.com/api/?q=${this.props.searchQuery}&page=${this.props.page}&key=30833222-94e556fd2dbde651348f500b2&image_type=photo&orientation=horizontal&per_page=12`
