@@ -27,8 +27,8 @@ export default class Modal extends Component {
       <div className={css.overlay} onClick={this.handleBackdropCkick}>
         <div className={css.modal}>
           <img
-            src="https://cdn.pixabay.com/photo/2022/12/18/19/30/christmas-7664112_1280.jpg"
-            alt=""
+            src={this.props.image.largeImageURL}
+            alt={this.props.image.tags}
           />
         </div>
       </div>

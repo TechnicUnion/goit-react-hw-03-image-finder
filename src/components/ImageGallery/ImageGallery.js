@@ -11,6 +11,7 @@ class ImageGallery extends Component {
     error: null,
     status: 'idle',
     showModal: false,
+    largeImage: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,8 +39,12 @@ class ImageGallery extends Component {
     }
   }
 
-  openModal = () => {
-    this.setState({ showModal: true });
+  openModal = e => {
+    console.log(e.target.src);
+    const modalImage = this.state.gallery.hits.filter(image => {
+      return image.webformatURL.includes(e.target.src);
+    });
+    this.setState({ showModal: true, largeImage: modalImage });
   };
 
   closeModal = () => {
@@ -63,7 +68,9 @@ class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <div>
-          {this.state.showModal && <Modal onClose={this.closeModal} />}
+          {this.state.showModal && (
+            <Modal image={this.state.largeImage[0]} onClose={this.closeModal} />
+          )}
           <ul className={css.gallery}>
             {gallery.hits.map(item => (
               <li className={css.gallery_item} key={item.id}>
