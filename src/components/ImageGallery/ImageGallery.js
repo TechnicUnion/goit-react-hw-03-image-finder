@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import css from '../styles.module.css';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
+import Modal from 'components/Modal/Modal';
 
 class ImageGallery extends Component {
   state = {
     gallery: null,
     error: null,
     status: 'idle',
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,6 +38,10 @@ class ImageGallery extends Component {
     }
   }
 
+  togleModal = () => {
+    this.setState(state => ({ showModal: !state.showModal }));
+  };
+
   render() {
     const { gallery, status, error } = this.state;
     if (status === 'idle') {
@@ -52,14 +58,16 @@ class ImageGallery extends Component {
 
     if (status === 'resolved') {
       return (
-        <ul className={css.gallery}>
-          {gallery &&
-            gallery.hits.map(item => (
+        <div>
+          {this.state.showModal && <Modal onClose={this.togleModal} />}
+          <ul className={css.gallery}>
+            {gallery.hits.map(item => (
               <li className={css.gallery_item} key={item.id}>
-                <ImageGalleryItem item={item} />
+                <ImageGalleryItem item={item} onClick={this.togleModal} />
               </li>
             ))}
-        </ul>
+          </ul>
+        </div>
       );
     }
   }
