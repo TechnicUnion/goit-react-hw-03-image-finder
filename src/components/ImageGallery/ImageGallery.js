@@ -38,8 +38,12 @@ class ImageGallery extends Component {
     }
   }
 
-  togleModal = () => {
-    this.setState(state => ({ showModal: !state.showModal }));
+  openModal = () => {
+    this.setState({ showModal: true });
+  };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
   };
 
   render() {
@@ -59,11 +63,11 @@ class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <div>
-          {this.state.showModal && <Modal onClose={this.togleModal} />}
+          {this.state.showModal && <Modal onClose={this.closeModal} />}
           <ul className={css.gallery}>
             {gallery.hits.map(item => (
               <li className={css.gallery_item} key={item.id}>
-                <ImageGalleryItem item={item} onClick={this.togleModal} />
+                <ImageGalleryItem item={item} onClick={this.openModal} />
               </li>
             ))}
           </ul>
