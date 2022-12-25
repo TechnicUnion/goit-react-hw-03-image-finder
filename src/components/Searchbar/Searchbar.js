@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BsSearch } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import css from '../styles.module.css';
 
@@ -23,18 +24,14 @@ export default class Searchbar extends Component {
     }
 
     this.props.onSubmit(this.state.searchQuery);
-    // this.inputReset();
   };
-  //   inputReset() {
-  //     this.setState({ name: '', number: '' });
-  //   }
 
   render() {
     return (
       <header className={css.searchbar}>
         <form className={css.form} onSubmit={this.handleSubmit}>
           <button type="submit" className={css.button}>
-            <span className={css.button_label}>Search</span>
+            <BsSearch className={css.button_label} />
           </button>
 
           <input

@@ -6,6 +6,7 @@ import Button from 'components/Button/Button';
 class App extends Component {
   state = {
     searchQuery: '',
+    page: 1,
   };
 
   formSubmitHandler = data => {
@@ -13,16 +14,21 @@ class App extends Component {
     this.setState({ searchQuery: data });
   };
 
+  loadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
   render() {
     return (
       <div>
         <Searchbar onSubmit={this.formSubmitHandler} />
-        {this.state.searchQuery && (
-          <div>
-            <ImageGallery searchQuery={this.state.searchQuery} />
-            <Button />
-          </div>
-        )}
+        <div>
+          <ImageGallery
+            searchQuery={this.state.searchQuery}
+            page={this.state.page}
+          />
+          {this.state.searchQuery && <Button onClick={this.loadMore} />}
+        </div>
       </div>
     );
   }

@@ -11,19 +11,11 @@ class ImageGallery extends Component {
     status: 'idle',
   };
 
-  //   componentDidMount() {
-  //     fetch(
-  //       `https://pixabay.com/api/?q=${this.props.searchQuery}&page=1&key=30833222-94e556fd2dbde651348f500b2&image_type=photo&orientation=horizontal&per_page=12`
-  //     )
-  //       .then(res => res.json())
-  //       .then(gallery => this.setState({ gallery }));
-  //   }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchQuery !== this.props.searchQuery) {
       this.setState({ status: 'pending' });
       fetch(
-        `https://pixabay.com/api/?q=${this.props.searchQuery}&page=1&key=30833222-94e556fd2dbde651348f500b2&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${this.props.searchQuery}&page=${this.props.page}&key=30833222-94e556fd2dbde651348f500b2&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => response.json())
         .then(gallery => {
@@ -37,33 +29,29 @@ class ImageGallery extends Component {
             )
           );
         })
-        .catch(error => {
-          console.log(error);
-          return this.setState({ error, status: 'rejected' });
-        });
+        .catch(error => this.setState({ error, status: 'rejected' }));
     }
   }
 
   render() {
-    const galleryList = this.state.gallery;
-    if (this.state.status === 'idle') {
+    const { gallery, status, error } = this.state;
+    if (status === 'idle') {
       return <div>Введіть запит для пошуку</div>;
     }
 
-    if (this.state.status === 'pending') {
+    if (status === 'pending') {
       return <Loader />;
     }
 
-    if (this.state.status === 'rejected') {
-      console.log(this.state.error);
-      return <h1>{this.state.error.message}</h1>;
+    if (status === 'rejected') {
+      return <h1>{error.message}</h1>;
     }
 
-    if (this.state.status === 'resolved') {
+    if (status === 'resolved') {
       return (
         <ul className={css.gallery}>
-          {galleryList &&
-            galleryList.hits.map(item => (
+          {gallery &&
+            gallery.hits.map(item => (
               <li className={css.gallery_item} key={item.id}>
                 <ImageGalleryItem item={item} />
               </li>
@@ -78,4 +66,5 @@ export default ImageGallery;
 
 ImageGallery.propTypes = {
   searchQuery: PropTypes.string,
+  page: PropTypes.number,
 };
