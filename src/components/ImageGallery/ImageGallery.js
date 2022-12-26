@@ -15,14 +15,6 @@ class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // if (this.props.newFetch && prevState.gallery.length > 0) {
-    //   console.log(prevState.gallery.length > 0);
-    //   console.log(this.state.gallery.length);
-    //   console.log(this.state.gallery);
-
-    //   this.setState({ gallery: [] });
-    // }
-
     if (
       prevProps.searchQuery !== this.props.searchQuery ||
       prevProps.page !== this.props.page
@@ -55,21 +47,18 @@ class ImageGallery extends Component {
     }
   }
 
-  openModal = e => {
-    console.log(e.target.src);
-    const modalImage = this.state.gallery.hits.filter(image => {
-      return image.webformatURL.includes(e.target.src);
+  openModal = data => {
+    console.log(data);
+
+    this.setState({
+      showModal: true,
+      largeImage: data,
     });
-    this.setState({ showModal: true, largeImage: modalImage });
   };
 
   closeModal = () => {
     this.setState({ showModal: false });
   };
-
-  // resetGalleryState() {
-  //   this.setState({ gallery: [] });
-  // }
 
   render() {
     const { gallery, status, error } = this.state;
@@ -89,7 +78,7 @@ class ImageGallery extends Component {
       return (
         <div>
           {this.state.showModal && (
-            <Modal image={this.state.largeImage[0]} onClose={this.closeModal} />
+            <Modal image={this.state.largeImage} onClose={this.closeModal} />
           )}
           <ul className={css.gallery}>
             {gallery.map(({ hits }) =>

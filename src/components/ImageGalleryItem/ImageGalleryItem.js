@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 const ImageGalleryItem = ({ item, onClick }) => {
   return (
     <div>
-      <img src={item.webformatURL} alt={item.tags} onClick={onClick} />
+      <img
+        src={item.webformatURL}
+        alt={item.tags}
+        onClick={() => onClick(item)}
+      />
     </div>
   );
 };
