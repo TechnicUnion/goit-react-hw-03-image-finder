@@ -7,7 +7,7 @@ import Modal from 'components/Modal/Modal';
 
 class ImageGallery extends Component {
   state = {
-    gallery: null,
+    gallery: [],
     error: null,
     status: 'idle',
     showModal: false,
@@ -15,10 +15,12 @@ class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // if (
-    //   prevProps.searchQuery !== this.props.searchQuery ||
-    //   prevProps.page == this.props.page
-    // ) {
+    // if (this.props.newFetch && prevState.gallery.length > 0) {
+    //   console.log(prevState.gallery.length > 0);
+    //   console.log(this.state.gallery.length);
+    //   console.log(this.state.gallery);
+
+    //   this.setState({ gallery: [] });
     // }
 
     if (
@@ -31,9 +33,14 @@ class ImageGallery extends Component {
       )
         .then(response => response.json())
         .then(gallery => {
-          if (gallery.hits.length > 0) {
+          if (gallery.hits.length > 0 && !this.props.newFetch) {
             return this.setState({
-              gallery,
+              gallery: [...prevState.gallery, gallery],
+              status: 'resolved',
+            });
+          } else if (this.props.newFetch && gallery.hits.length > 0) {
+            return this.setState({
+              gallery: [gallery],
               status: 'resolved',
             });
           }
@@ -60,6 +67,10 @@ class ImageGallery extends Component {
     this.setState({ showModal: false });
   };
 
+  // resetGalleryState() {
+  //   this.setState({ gallery: [] });
+  // }
+
   render() {
     const { gallery, status, error } = this.state;
     if (status === 'idle') {
@@ -81,11 +92,13 @@ class ImageGallery extends Component {
             <Modal image={this.state.largeImage[0]} onClose={this.closeModal} />
           )}
           <ul className={css.gallery}>
-            {gallery.hits.map(item => (
-              <li className={css.gallery_item} key={item.id}>
-                <ImageGalleryItem item={item} onClick={this.openModal} />
-              </li>
-            ))}
+            {gallery.map(({ hits }) =>
+              hits.map(item => (
+                <li className={css.gallery_item} key={item.id}>
+                  <ImageGalleryItem item={item} onClick={this.openModal} />
+                </li>
+              ))
+            )}
           </ul>
         </div>
       );
