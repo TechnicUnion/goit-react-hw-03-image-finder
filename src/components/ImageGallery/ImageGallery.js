@@ -15,6 +15,12 @@ class ImageGallery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    // if (
+    //   prevProps.searchQuery !== this.props.searchQuery ||
+    //   prevProps.page == this.props.page
+    // ) {
+    // }
+
     if (
       prevProps.searchQuery !== this.props.searchQuery ||
       prevProps.page !== this.props.page
@@ -26,7 +32,10 @@ class ImageGallery extends Component {
         .then(response => response.json())
         .then(gallery => {
           if (gallery.hits.length > 0) {
-            return this.setState({ gallery, status: 'resolved' });
+            return this.setState({
+              gallery,
+              status: 'resolved',
+            });
           }
 
           return Promise.reject(

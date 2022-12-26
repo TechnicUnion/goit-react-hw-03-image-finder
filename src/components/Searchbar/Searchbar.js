@@ -24,6 +24,7 @@ export default class Searchbar extends Component {
     }
 
     this.props.onSubmit(this.state.searchQuery);
+    eve.target.reset();
   };
 
   render() {

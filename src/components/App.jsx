@@ -11,7 +11,7 @@ class App extends Component {
 
   formSubmitHandler = data => {
     console.log(data);
-    this.setState({ searchQuery: data });
+    this.setState({ searchQuery: data, page: 1 });
   };
 
   loadMore = () => {
