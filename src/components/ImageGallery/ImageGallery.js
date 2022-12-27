@@ -4,6 +4,7 @@ import css from '../styles.module.css';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
 import Modal from 'components/Modal/Modal';
+import Button from 'components/Button/Button';
 
 class ImageGallery extends Component {
   state = {
@@ -48,8 +49,6 @@ class ImageGallery extends Component {
   }
 
   openModal = data => {
-    console.log(data);
-
     this.setState({
       showModal: true,
       largeImage: data,
@@ -89,6 +88,10 @@ class ImageGallery extends Component {
               ))
             )}
           </ul>
+          {this.state.gallery.length !==
+            Math.ceil(this.state.gallery[0].totalHits / 12) && (
+            <Button onClick={this.props.onClick} />
+          )}
         </div>
       );
     }

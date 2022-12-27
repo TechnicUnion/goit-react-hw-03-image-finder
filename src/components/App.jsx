@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
-import Button from 'components/Button/Button';
+import { animateScroll as scroll } from 'react-scroll';
 
 class App extends Component {
   state = {
@@ -18,6 +18,7 @@ class App extends Component {
 
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1, newFetch: false }));
+    scroll.scrollToBottom();
   };
 
   render() {
@@ -29,8 +30,8 @@ class App extends Component {
             searchQuery={this.state.searchQuery}
             page={this.state.page}
             newFetch={this.state.newFetch}
+            onClick={this.loadMore}
           />
-          {this.state.searchQuery && <Button onClick={this.loadMore} />}
         </div>
       </div>
     );
